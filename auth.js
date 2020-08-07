@@ -1,7 +1,6 @@
 const url = require("url");
 const http = require("http");
 const path = require("path");
-const Discord = require("discord.js");
 const express = require("express");
 const app = express();
 const passport = require("passport");
