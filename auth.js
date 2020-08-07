@@ -1,8 +1,6 @@
 const url = require("url");
 const http = require("http");
 const path = require("path");
-const fs = require("fs");
-const config = JSON.parse(fs.readFileSync("./config.json", "utf8"));
 const Discord = require("discord.js");
 const express = require("express");
 const app = express();
@@ -11,8 +9,6 @@ const session = require("express-session");
 const Strategy = require("passport-discord").Strategy;
 const md = require("marked");
 const morgan = require("morgan");
-const moment = require("moment");
-require("moment-duration-format");
 const config = require("./config.json");
 
 module.exports = client => {
