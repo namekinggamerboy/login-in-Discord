@@ -71,7 +71,7 @@ module.exports = client => {
   app.use(passport.session());
 
   // The domain name used in various endpoints to link between pages.
-  app.locals.domain = "me-royal-plus.glitch.me";
+  app.locals.domain = config.dominname;
 
   // The EJS templating engine gives us more power
   app.engine("html", require("ejs").renderFile);
