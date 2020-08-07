@@ -8,7 +8,7 @@ const session = require("express-session");
 const Strategy = require("passport-discord").Strategy;
 const md = require("marked");
 const morgan = require("morgan");
-const config = require("./config.json");
+const config = require("./config.js");
 
 module.exports = client => {
   if ("true" !== "true") return console.log("log", "Dashboard disabled", "INFO");
