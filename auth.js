@@ -111,3 +111,36 @@ module.exports = client => {
     req.session.backURL = req.originalURL;
     res.redirect("/");
   }
+
+app.get('/logout', function (req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+app.get('/login', (req, res, next) => {
+		if (req.session.backURL) {
+			req.session.backURL = req.session.backURL;
+		} else if (req.headers.referer) {
+			const parsed = url.parse(req.headers.referer);
+			if (parsed.hostname === app.locals.domain) {
+				req.session.backURL = parsed.path;
+			}
+		} else {
+			req.session.backURL = '/';
+		}
+		next();
+	},
+	passport.authenticate('discord'));
+
+	app.get('/callback', passport.authenticate('discord', {
+		failureRedirect: '/'
+	}), (req, res) => {
+		if (req.session.backURL) {
+			res.redirect(req.session.backURL);
+			req.session.backURL = null;
+		} else {
+			res.redirect('/');
+		}
+	});
+
+}
