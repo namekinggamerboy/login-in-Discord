@@ -8,50 +8,19 @@ const session = require("express-session");
 const Strategy = require("passport-discord").Strategy;
 const md = require("marked");
 const morgan = require("morgan");
-const config = require("../config.js");
 
-module.exports = client => {
-  if ("true" !== "true") return console.log("log", "Dashboard disabled", "INFO");
-  const dataDir = path.resolve(`${process.cwd()}${path.sep}dashboard`);
-  const templateDir = path.resolve(`${dataDir}${path.sep}templates`);
-
- /* app.set("trust proxy", 5);
-  app.use(
-    "/public",
-    express.static(path.resolve(`${dataDir}${path.sep}public`), {
-      maxAge: "10d"
-    })
-  );
-  app.use(morgan("combined")); // Logger
-
-  // uhhhh check what these do.
-  passport.serializeUser((user, done) => {
-    done(null, user);
-  });
-  passport.deserializeUser((obj, done) => {
-    done(null, obj);
-  });*/
+module.exports = (op) => {
  
-/*
- var protocol;
+let client = op.up;
 
-  if ("true" === "true") {
-    client.protocol = "https://";
-  } else {
-    client.protocol = "http://";
-  }
-
-  protocol = client.protocol;
-*/
-  
   console.log(`Callback URL: ${config.callback}`);
   passport.use(
     new Strategy(
       {
-        clientID: config.botid,
-        clientSecret: config.botsecret,
-        callbackURL: config.callback,
-        scope: ["identify", "guilds"]
+        clientID: client.user.id,
+        clientSecret: op.botSecret,
+        callbackURL: op.callback,
+        scope: op.scope
       },
       (accessToken, refreshToken, profile, done) => {
         process.nextTick(() => done(null, profile));
@@ -70,15 +39,13 @@ module.exports = client => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // The domain name used in various endpoints to link between pages.
-  app.locals.domain = config.dominname;
+  app.locals.domain = op.dominName;
+  app.engine("html", require("ejs").renderFile)
+   .set("view engine", "ejs")
 
-  // The EJS templating engine gives us more power
-  app.engine("html", require("ejs").renderFile);
-  app.set("view engine", "html");
-
-  // body-parser reads incoming JSON or FORM data and simplifies their
-  // use in code.
+app.use(express.static(path.join(op.public)))
+		.set("views", path.join(op.view))
+   
   var bodyParser = require("body-parser");
   app.use(bodyParser.json()); // to support JSON-encoded bodies
   app.use(
