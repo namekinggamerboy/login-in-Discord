@@ -116,6 +116,16 @@ app.get('/login', (req, res, next) => {
 		if (req.session.backURL) {
 			res.redirect(req.session.backURL);
 			req.session.backURL = null;
+        if(op.loginInfo){
+    let message = op.loginMessage;
+    if(mesage.includes("{username}")){
+    message = message.split("{username}").join(req.user.username);
+    }
+   if(message.includes("{userTag}")){
+ message = message.split("{username}").join(req.user.username+"#"+req.user.discriminator);
+}
+   client.channels.get(op.loginChannel).send(message);
+}
 		} else {
 			res.redirect('/');
 		}
