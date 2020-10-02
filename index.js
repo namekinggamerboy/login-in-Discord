@@ -9,11 +9,21 @@ const Strategy = require("passport-discord").Strategy;
 const md = require("marked");
 const morgan = require("morgan");
 
+function makeid(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
 module.exports = (op) => {
  
 let client = op.up;
 
-  console.log(`Callback URL: ${config.callback}`);
+  console.log(`Callback URL: ${op.callback}`);
   passport.use(
     new Strategy(
       {
@@ -28,17 +38,7 @@ let client = op.up;
     )
   );
 
-function makeid(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
-}
-
-  app.use(
+ app.use(
     session({
       secret: makeid(10),
       resave: false,
@@ -120,5 +120,7 @@ app.get('/login', (req, res, next) => {
 			res.redirect('/');
 		}
 	});
+client.dashboardGet = app.get;
+client.dashboardPost = app.post;
 
 }
