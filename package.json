@@ -17,7 +17,7 @@
     "express-session": "*",
     "ejs": "3.1.5",
     "body-parser": "*"
-  }
+  },
  "engines": {
     "node": "10x"
   }
