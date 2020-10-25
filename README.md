@@ -1,5 +1,8 @@
 Login in - discord
-
+Use this package 
+```
+Only uplife-api user
+```
 
 
 `Package.json`
